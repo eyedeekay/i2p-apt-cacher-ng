@@ -1,4 +1,12 @@
 
+GENMKFILE_PATH ?= /usr/share/genmkfile
+GENMKFILE_ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
+export GENMKFILE_PATH
+export GENMKFILE_ROOT_DIR
+
+include $(GENMKFILE_PATH)/makefile-full
+
 docker:
 	docker build --no-cache -t eyedeekay/i2p-apt-cacher-ng .
 
@@ -39,11 +47,3 @@ deb: gz
 
 signed: gz
 	debuild
-
-GENMKFILE_PATH ?= /usr/share/genmkfile
-GENMKFILE_ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-
-export GENMKFILE_PATH
-export GENMKFILE_ROOT_DIR
-
-include $(GENMKFILE_PATH)/makefile-full

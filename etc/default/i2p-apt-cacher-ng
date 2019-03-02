@@ -15,4 +15,4 @@
 # umask 022
 
 # Additional options that are passed to the Daemon.
-DAEMON_OPTS=" -c /etc/ "
+DAEMON_OPTS=" -c /etc/i2p-apt-cacher-ng "
