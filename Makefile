@@ -47,3 +47,6 @@ deb: gz
 
 signed: gz
 	debuild
+
+debclean:
+	 dpkg-buildpackage -rfakeroot -Tclean

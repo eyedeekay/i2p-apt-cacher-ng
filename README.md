@@ -1,6 +1,8 @@
 i2p-apt-cacher-ng
 -----------------
 
+Probably don't use this yet, I'm figuring the rest out today.
+
 apt-installable configuration of apt-cacher-ng set up to help provide and
 install i2p software currently available from the clearnet, or at least that's
 the plan. It won't be "done" for at least another two months, because it needs
