@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 # the SocketPath option can be removed if the inetd bridge functionality is not needed
-ExecStart=/usr/sbin/i2p-apt-cacher-ng SocketPath=/run/apt-cacher-ng/socket -c /etc/i2p-apt-cacher-ng ForeGround=1
+ExecStart=/usr/sbin/i2p-apt-cacher-ng SocketPath=/run/i2p-apt-cacher-ng/socket -c /etc/i2p-apt-cacher-ng ForeGround=1
 User=apt-cacher-ng
 Group=apt-cacher-ng
 # this can be changed to notify if the support was enabled at build time

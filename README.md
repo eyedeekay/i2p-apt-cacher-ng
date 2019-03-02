@@ -1,7 +1,11 @@
 i2p-apt-cacher-ng
 -----------------
 
-Probably don't use this yet, I'm figuring the rest out today.
+OK it's usable now. Make sure to read the full instructions.
+
+This project makes use of the I2P network. In order to use it, you will need to
+get an i2p router. [There is the original Java version](https://geti2p.net) and
+a [C++ version](https://i2pd.website).
 
 apt-installable configuration of apt-cacher-ng set up to help provide and
 install i2p software currently available from the clearnet, or at least that's
@@ -24,8 +28,7 @@ To be clear:
 
 in this scenario, apt is hidden, apt-cacher-ng is not.
 
-Settings I've pre-configured
-----------------------------
+### Settings I've pre-configured
 
  * Binds to localhost only, uses alternate port(7342) and alternate directory
  for i2p-specific configuration and package cache
@@ -39,16 +42,105 @@ Settings I've pre-configured
   - It passes through every HTTPS-enabled Debian mirror I could find. This makes
   it useful as an in-proxy for official Debian packages.
  * i2pd tunnels.d file
+ * Where necessary, logging *will be* disabled by default
+
+I need to customize the homepage and the reports page still.
 
 Client Setup:
 -------------
 
-Links/Sources:
+### ad-hoc with apt-transport-i2p or apt-transport-i2phttp
+
+First, install [apt-transport-i2phttp](https://github.com/eyedeekay/apt-transport-i2phttp)
+or [apt-transport-i2p](https://github.com/eyedeekay/apt-transport-i2p). Either
+will work, but apt-transport-i2phttp is slightly easier to configure, as it
+requires no configuration of the i2p router.
+
+Once you've installed an apt-transport for i2p, add something like this to your
+/etc/apt/sources.list.d with the available repositories you wish to retrieve
+over i2p.
+
+        deb http://thisisanexampleofafiftytwocharacterstringbecauseits.b32.i2p/ppa.launchpad.net/i2p-maintainers/i2p/ubuntu bionic main
+        deb-src http://thisisanexampleofafiftytwocharacterstringbecauseits.b32.i2p/ppa.launchpad.net/i2p-maintainers/i2p/ubuntu bionic main
+
+### system-wide with a dedicated tunnel
+
+This behaves more like apt-cacher-ng does on a LAN once the tunnel is
+configured, but it also requires that the apt-cacher-ng instance be able to
+retrieve all the packages you want, as apt will attempt to use the proxy to
+retrieve all the packages instead of just the ones you specified to run over
+i2p.
+
+Detailed configuration will be posted shortly.
+
+Service Setup: I2P
+------------------
+
+With a few exceptions, Debian package sources are just HTTP/S servers. All it
+takes is to point an HTTP Server tunnel at the locally running service. Launch
+the Tunnel Wizard and configure a tunnel with the following settings:
+
+1. Select a server tunnel
+
+![Select Service](step-1.png)
+
+2. Select an HTTP service
+
+![Select HTTP Service](step-2.png)
+
+3. Name it something memorable
+
+![Name it](step-3.png)
+
+4. Direct it at the i2p-apt-cacher-ng port(127.0.0.1:7342)
+
+![Point it at these ports](step-4.png)
+
+5. Set it to start up automatically with the router
+
+![Configure it to start automatically](step-5.png)
+
+6. Make sure your settings resemble this:
+
+![Review your settings](step-6.png)
+
+### Optimizations:
+
+Since the connection between the proxy and the actual Debian repositories is not
+anonymized yet, there isn't much point in having long, highly anonymous tunnels.
+You may wish to reduce the length of the tunnels to speed up retrieval.
+
+Service Setup: i2pd
+-------------------
+
+On versions of i2pd after 2.21 it should "just work." It does use Debian's
+configuration directory(/etc/i2pd/tunnels.d) as opposed to the default i2pd
+configuration directory (/var/lib/i2pd/tunnels.d), so if you're using something
+that is not Debian-like, you will need to symlink it to the correct directory.
+
+If you're still running 2.20 or lower, upgrade. There's lots of cool stuff in
+the new versions. If you absolutely cannot upgrade for some reason, add this to
+your tunnels.conf file:
+
+        [APT-INBOUND]
+        type = server
+        host = 127.0.0.1
+        port = 7342
+        inbound.length = 1
+        outbound.length = 1
+        inbound.quantity = 1
+        outbound.quantity = 1
+        inbound.backupQuantity = 1
+        outbound.backupQuanitity = 1
+        keys = apt-cacher-ng-in.dat
+
+Service Setup: sam-forwarder(router-agnostic)
+---------------------------------------------
+
+#### Links/Sources:
 
  * https://blog.packagecloud.io/eng/2015/05/05/using-apt-cacher-ng-with-ssl-tls/
  * https://www.zyxware.com/articles/3733/how-to-change-the-directory-of-the-apt-cacher-ng-downloaded-packages
  * https://www.unix-ag.uni-kl.de/~bloch/acng/html/howtos.html#mirroring
  * https://fabianlee.org/2018/02/11/ubuntu-a-centralized-apt-package-cache-using-apt-cacher-ng/
  * https://wiki.debian.org/AptCacherNg
-
-
