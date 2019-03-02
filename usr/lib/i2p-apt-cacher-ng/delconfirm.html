@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=8" />
+      <meta name="MSSmartTagsPreventParsing" content="true" />
+      <title>Apt-Cacher NG Command And Control Page</title>
+      <link rel="stylesheet" type="text/css" href="/style.css" />
+   </head>
+   <body>
+      <table border=0 cellspacing=0 cellpadding=0 width=800 class="center">
+         <tr>
+            <td class="title"><span>${vmode}ing cached files</span></td>
+         </tr>
+         <tr>
+            <td>
+               <form action="#top" rel="noreferrer">
+                  <div style="text-align:left;">
+                     <div class="visarea" id="logArea">
+                        <h3>File overview:</h3>
+                        ${stuff} <!-- remember the file set -->
+                        <!-- the question/execution variants are switched by the rendering class -->
+                        <div style="display:${:,delConfirmed,none,block}">
+                           <p>
+                           Do you really wish to proceed on ${count} file${countNZs} and related metadata?
+                           <p>
+                           <input type="submit" name="do${vmode}eYes" value="${vmode}e now"> <input type="submit" name="doNothing" value="Return to main page">
+                        </div>
+                        <div style="display:${:,delConfirmed,block,none}">
+                           <p>
+                           <input type="submit" name="doNothing" value="Return to main page">
+                        </div>
+               ${footer}
+                     </div>
+                  </div>
+               </form>
+            </td>
+         </tr>
+      </table>
+   </body>
+</html>
+
