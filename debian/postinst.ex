@@ -20,7 +20,9 @@ set -e
 
 case "$1" in
     configure)
+        mkdir -p /var/cache/i2p-apt-cacher-ng /var/log/i2p-apt-cacher-ng
         chown -R apt-cacher-ng:apt-cacher-ng /var/cache/i2p-apt-cacher-ng
+        chown -R apt-cacher-ng:apt-cacher-ng /var/log/i2p-apt-cacher-ng
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
