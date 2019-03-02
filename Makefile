@@ -35,7 +35,7 @@ DEBEMAIL=hankhill19580@gmail.com
 NAME=i2p-apt-cacher-ng
 
 gz:
-	tar --exclude "./.git" --exclude "./debian" -czvf ../"$(NAME)_$(VERSION).tar.gz" .
+	tar --exclude "./.git" --exclude "./debian" --exclude "*.png" -czvf ../"$(NAME)_$(VERSION).tar.gz" .
 
 debian:
 	dh_make -i -n -c mit \
