@@ -6,8 +6,8 @@
 # This is a POSIX shell fragment
 #
 
-# Set to non-empty value to disable the start of the service at boot time
-# DISABLED=1
+# Set to DISABLED to non-empty value to disable the start of the service at boot time
+
 
 # See umask(2) or chmod(1) for details.
 # 002 would make new files writable by group.
