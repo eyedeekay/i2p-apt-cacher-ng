@@ -1,5 +1,5 @@
 Source: i2p-apt-cacher-ng
-Section: unknown
+Section: net
 Priority: optional
 Maintainer: idk <hankhill19580@gmail.com>
 Build-Depends: debhelper (>= 10)
