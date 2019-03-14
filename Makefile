@@ -11,7 +11,7 @@ docker:
 	docker build --no-cache -t eyedeekay/i2p-apt-cacher-ng .
 
 run: docker
-	docker run --rm -i -t \
+	docker run --rm -i -t -d \
 		--name i2p-apt-cacher-ng \
 		--publish 127.0.0.1:7342:7342 \
 		eyedeekay/i2p-apt-cacher-ng
