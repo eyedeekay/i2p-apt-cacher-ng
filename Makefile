@@ -16,7 +16,8 @@ install:
 	cp etc/i2p-apt-cacher-ng/backends_invisible /etc/i2p-apt-cacher-ng/backends_invisible
 	cp etc/i2p-apt-cacher-ng/backends_community /etc/i2p-apt-cacher-ng/backends_community
 	cp etc/i2p-apt-cacher-ng/acng.conf /etc/i2p-apt-cacher-ng/acng.conf
-	install -oroot:apt-cacher-ng /etc/i2p-apt-cacher-ng/security.conf etc/i2p-apt-cacher-ng/security.conf
+	cp etc/i2p-apt-cacher-ng/security.conf /etc/i2p-apt-cacher-ng/security.conf
+	chown root:apt-cacher-ng /etc/i2p-apt-cacher-ng/security.conf
 	cp lib/systemd/system/i2p-apt-cacher-ng.service /lib/systemd/system/i2p-apt-cacher-ng.service
 	cp usr/lib/i2p-apt-cacher-ng/delconfirm.html /usr/lib/i2p-apt-cacher-ng/delconfirm.html
 	cp usr/lib/i2p-apt-cacher-ng/report.html /usr/lib/i2p-apt-cacher-ng/report.html
