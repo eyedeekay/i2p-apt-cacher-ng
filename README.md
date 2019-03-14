@@ -1,7 +1,8 @@
 i2p-apt-cacher-ng
 -----------------
 
-OK it's usable now. Make sure to read the full instructions.
+OK it's usable now. Debian Sid or Docker Only. Make sure to read the full
+instructions.
 
 This project makes use of the I2P network. In order to use it, you will need to
 get an i2p router. [There is the original Java version](https://geti2p.net) and
@@ -62,8 +63,11 @@ Once you've installed an apt-transport for i2p, add something like this to your
 /etc/apt/sources.list.d with the available repositories you wish to retrieve
 over i2p.
 
-        deb http://thisisanexampleofafiftytwocharacterstringbecauseits.b32.i2p/ppa.launchpad.net/i2p-maintainers/i2p/ubuntu bionic main
-        deb-src http://thisisanexampleofafiftytwocharacterstringbecauseits.b32.i2p/ppa.launchpad.net/i2p-maintainers/i2p/ubuntu bionic main
+        deb i2p://thisisanexampleofafiftytwocharacterstringbecauseits.b32.i2p/ppa.launchpad.net/i2p-maintainers/i2p/ubuntu bionic main
+        deb-src i2p://thisisanexampleofafiftytwocharacterstringbecauseits.b32.i2p/ppa.launchpad.net/i2p-maintainers/i2p/ubuntu bionic main
+
+        deb i2p://h2knzawve56vtiimbdsl74bmbuw7xr65xhgrdjtjnbfxxw4hsqlq.b32.i2p/ppa.launchpad.net/i2p-maintainers/i2p/ubuntu bionic main
+        deb-src i2p://h2knzawve56vtiimbdsl74bmbuw7xr65xhgrdjtjnbfxxw4hsqlq.b32.i2p/ppa.launchpad.net/i2p-maintainers/i2p/ubuntu bionic main
 
 ### system-wide with a dedicated tunnel
 

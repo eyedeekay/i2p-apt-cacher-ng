@@ -1,4 +1,4 @@
-FROM eyedeekay/whonix:bionic
+FROM eyedeekay/whonix:unstable
 #ENV DEBIAN_FRONTEND=noninteractive
 USER root
 RUN DEBIAN_FRONTEND=noninteractive apt-get update
