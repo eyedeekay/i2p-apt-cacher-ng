@@ -1,5 +1,5 @@
-/var/log//apt-cache*.log {
-        su  
+/var/log//i2p-apt-cache*.log {
+        su
         size 10M
         missingok
         rotate 7
@@ -16,8 +16,8 @@
         endscript
 }
 
-/var/log//apt-cache*.err {
-        su  
+/var/log//i2p-apt-cache*.err {
+        su
         daily
         notifempty
         missingok
