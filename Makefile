@@ -1,6 +1,6 @@
 
 install:
-	cp etc/i2pd/tunnels.d/apt-cacher-ng.conf
+	cp etc/i2pd/tunnels.d/apt-cacher-ng.conf /etc/i2pd/tunnels.d/apt-cacher-ng.conf
 	cp etc/logrotate.d/i2p-apt-cacher-ng etc/logrotate.d/i2p-apt-cacher-ng
 	cp etc/cron.daily/i2p-apt-cacher-ng etc/cron.daily/i2p-apt-cacher-ng
 	cp etc/init.d/i2p-apt-cacher-ng etc/init.d/i2p-apt-cacher-ng
