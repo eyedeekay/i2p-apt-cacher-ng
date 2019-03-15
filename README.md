@@ -1,8 +1,7 @@
 i2p-apt-cacher-ng
 -----------------
 
-OK it's usable now. Debian Sid or Docker Only. Make sure to read the full
-instructions.
+Debian Sid or Docker Only. Make sure to read the full instructions.
 
 This project makes use of the I2P network. In order to use it, you will need to
 get an i2p router. [There is the original Java version](https://geti2p.net) and
@@ -11,7 +10,7 @@ a [C++ version](https://i2pd.website).
 apt-installable configuration of apt-cacher-ng set up to help provide and
 install i2p software currently available from the clearnet, or at least that's
 the plan. It won't be "done" for at least another two months, because it needs
-split configs. It also requires genmkfile.
+split configs.
 
 Although I'm exploring use of a proxy between apt-cacher-ng and the upstream
 repositories to obscure the location of the requester, I haven't confirmed that
@@ -46,8 +45,6 @@ in this scenario, apt is hidden, apt-cacher-ng is not.
   it useful as an in-proxy for official Debian packages.
  * i2pd tunnels.d file
  * Where necessary, logging *will be* disabled by default
-
-I need to customize the homepage and the reports page still.
 
 Client Setup:
 -------------

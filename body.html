@@ -1,0 +1,96 @@
+<h2 id="i2p-apt-cacher-ng">i2p-apt-cacher-ng</h2>
+<p>Debian Sid or Docker Only. Make sure to read the full instructions.</p>
+<p>This project makes use of the I2P network. In order to use it, you will need to get an i2p router. <a href="https://geti2p.net">There is the original Java version</a> and a <a href="https://i2pd.website">C++ version</a>.</p>
+<p>apt-installable configuration of apt-cacher-ng set up to help provide and install i2p software currently available from the clearnet, or at least that’s the plan. It won’t be “done” for at least another two months, because it needs split configs.</p>
+<p>Although I’m exploring use of a proxy between apt-cacher-ng and the upstream repositories to obscure the location of the requester, I haven’t confirmed that such a thing works yet. As such, this is currently geared toward <em>non-anonymous</em> organizations that want to provide access to certain Debian-like repositories over i2p, or organizations with sufficient expertise and resources to obfuscate their location and identity in other ways(Such as by using Tor to retrieve packages between apt-cacher-ng and deb.debian.org or by using a local mirror acquired in any of probably hundreds of other ways potentially).</p>
+<p>To be clear:</p>
+<pre><code>    apt ---  anonymous --&gt; apt-cacher-ng --- clearnet --&gt; debian
+    apt &lt;--  anonymous --- apt-cacher-ng &lt;-- clearnet --- debian</code></pre>
+<p>in this scenario, apt is hidden, apt-cacher-ng is not.</p>
+<h3 id="settings-ive-pre-configured">Settings I’ve pre-configured</h3>
+<ul>
+<li>Binds to localhost only, uses alternate port(7342) and alternate directory for i2p-specific configuration and package cache</li>
+<li>Removed defaults that automatically cache all Debian packages. Instead it should just cache packages from i2p-specific repositories and pass-through the rest</li>
+<li>Sets own defaults, uses own initscript, has own systemd unit file, own PID.</li>
+<li>Still runs as user apt-cacher-ng</li>
+<li><p>Allows CONNECT to a LOT of sites: This is the expression in the PassThroughPattern field.</p>
+<pre><code> (ppa\.launchpad\.net|deb\.i2p2\.de|repo\.i2pd\.xyz|debian\.unnoba\.edu\.ar|mirror\.aarnet\.edu\.au|debian\.anexia\.at|ftp\.tu-graz\.ac\.at|mirror\.internex\.at|mirror\.datacenter\.by|ftp\.belnet\.be|mirror\.as35701\.net|repositorio\.nti\.ufal\.br|debian\.ludost\.net|ftp\.uni-sofia\.bg|debian\.ca-west\.mirror\.fullhost\.com|mirror\.csclub\.uwaterloo\.ca|mirrors\.163\.com|mirrors\.tuna\.tsinghua\.edu\.cn|mirrors\.ustc\.edu\.cn|mirrors\.ucr\.ac\.cr|ftp\.debian\.cz|ftp\.sh\.cvut\.cz|ftp\.zcu\.cz|merlin\.fit\.vutbr\.cz|mirror\.dkm\.cz|mirror\.one\.com|mirrors\.dotsrc\.org|debian\.ues\.edu\.sv|ftp\.eenet\.ee|debian\.mirror\.ate\.info|ftp\.u-strasbg\.fr|mirror\.plusserver\.comdebian|mirrors\.ircam\.fr|debian\.grena\.ge|artfiles\.org|debian\.charite\.de|debian\.inf\.tu-dresden\.de|debian\.tu-bs\.de|ftp\.fau\.de|ftp\.halifax\.rwth-aachen\.de|ftp\.mpi-sb\.mpg\.de|ftp\.plusline\.net|ftp-stud\.hs-esslingen\.de|ftp\.tu-chemnitz\.de|mirror\.eu\.oneandone\.net|mirror\.netcologne\.de|mirror\.wtnet\.de|packages\.hs-regensburg\.de|mirror\.xtom\.com\.hk|ftp\.fsn\.hu|debian\.simnet\.is|mirror\.isoc\.org\.il|debian\.mirror\.garr\.it|ftp\.linux\.it|dennou-k\.gfd-dennou\.org|dennou-q\.gfd-dennou\.org|ftp\.jaist\.ac\.jp|ftp\.yz\.yamagata-u\.ac\.jp|mirror\.hoster\.kz|mirror\.ps\.kz|debian\.mirror\.liquidtelecom\.com|ftp\.harukasan\.org|ftp\.lanet\.kr|debian\.koyanet\.lv|mirror\.litnet\.lt|debmirror\.tuxis\.nl|ftp\.nluug\.nl|mirror\.i3d\.net|mirror\.neostrada\.nl|mirror\.nforce\.com|mirror\.nl\.datapacket\.com|mirror\.novg\.net|mirror\.serverius\.net|mirror\.vpgrp\.io|mirror\.fsmg\.org\.nz|mirror\.pregi\.net|ftp\.icm\.edu\.pl|ftp\.eq\.uc\.pt|ftp\.rnl\.tecnico\.ulisboa\.pt|mirrors\.up\.pt|mirrors\.nav\.ro|mirrors\.nxthost\.com|mirrors\.pidginhost\.com|ftp\.psn\.ru|mirror\.corbina\.net|mirror\.0x\.sg|ftp\.arnes\.si|debian\.redimadrid\.es|debian\.redparra\.com|ftp\.caliu\.cat|ftp\.cica\.es|ftp\.acc\.umu\.se|mirror\.linux\.pizza|mirror\.zetup\.net|debian\.ethz\.ch|mirror\.init7\.net|mirror\.iway\.ch|mirror\.sinavps\.ch|pkg\.adfinis-sygroup\.ch|debian\.csie\.ntu\.edu\.tw|ftp\.ntou\.edu\.tw|mirror\.applebred\.net|mirror\.kku\.ac\.th|ftp\.metu\.edu\.tr|debian\.volia\.net|debian\.mirror\.uk\.sargasso\.net|mirror\.bytemark\.co\.uk|mirror\.mythic-beasts\.com|mirror\.sax\.uk\.as61049\.net|mirrorservice\.org|ftp\.debian\.org|mirror\.sucs\.swan\.ac\.uk|mirror\.vorboss\.net|debian\.osuosl\.org|mirror\.hmc\.edu|mirror\.math\.princeton\.edu|mirrors\.bloomu\.edu|mirrors\.cat\.pdx\.edu|mirrors\.edge\.kernel\.org|mirrors\.gigenet\.com|mirror\.sjc02\.svwh\.net|mirrors\.lug\.mtu\.edu|mirrors\.namecheap\.com|mirrors\.ocf\.berkeley\.edu|mirrors\.syringanetworks\.net|mirror\.steadfast\.net|mirrors\.wikimedia\.org|mirrors\.xmission\.com|repo\.cure\.edu\.uy):443</code></pre></li>
+<li>It passes through every HTTPS-enabled Debian mirror I could find. This makes it useful as an in-proxy for official Debian packages.</li>
+<li>i2pd tunnels.d file</li>
+<li><p>Where necessary, logging <em>will be</em> disabled by default</p></li>
+</ul>
+<h2 id="client-setup">Client Setup:</h2>
+<h3 id="ad-hoc-with-apt-transport-i2p-or-apt-transport-i2phttp">ad-hoc with apt-transport-i2p or apt-transport-i2phttp</h3>
+<p>First, install <a href="https://github.com/eyedeekay/apt-transport-i2phttp">apt-transport-i2phttp</a> or <a href="https://github.com/eyedeekay/apt-transport-i2p">apt-transport-i2p</a>. Either will work, but apt-transport-i2phttp is slightly easier to configure, as it requires no configuration of the i2p router.</p>
+<p>Once you’ve installed an apt-transport for i2p, add something like this to your /etc/apt/sources.list.d with the available repositories you wish to retrieve over i2p.</p>
+<pre><code>    deb i2p://thisisanexampleofafiftytwocharacterstringbecauseits.b32.i2p/ppa.launchpad.net/i2p-maintainers/i2p/ubuntu bionic main
+    deb-src i2p://thisisanexampleofafiftytwocharacterstringbecauseits.b32.i2p/ppa.launchpad.net/i2p-maintainers/i2p/ubuntu bionic main
+
+    deb i2p://h2knzawve56vtiimbdsl74bmbuw7xr65xhgrdjtjnbfxxw4hsqlq.b32.i2p/ppa.launchpad.net/i2p-maintainers/i2p/ubuntu bionic main
+    deb-src i2p://h2knzawve56vtiimbdsl74bmbuw7xr65xhgrdjtjnbfxxw4hsqlq.b32.i2p/ppa.launchpad.net/i2p-maintainers/i2p/ubuntu bionic main</code></pre>
+<h3 id="system-wide-with-a-dedicated-tunnel">system-wide with a dedicated tunnel</h3>
+<p>This behaves more like apt-cacher-ng does on a LAN once the tunnel is configured, but it also requires that the apt-cacher-ng instance be able to retrieve all the packages you want, as apt will attempt to use the proxy to retrieve all the packages instead of just the ones you specified to run over i2p.</p>
+<p>Detailed configuration will be posted shortly.</p>
+<h2 id="service-setup-i2p">Service Setup: I2P</h2>
+<p>With a few exceptions, Debian package sources are just HTTP/S servers. All it takes is to point an HTTP Server tunnel at the locally running service. Launch the Tunnel Wizard and configure a tunnel with the following settings:</p>
+<ol type="1">
+<li>Select a server tunnel</li>
+</ol>
+<figure>
+<img src="step-1.png" alt="Select Service" /><figcaption>Select Service</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>Select an HTTP service</li>
+</ol>
+<figure>
+<img src="step-2.png" alt="Select HTTP Service" /><figcaption>Select HTTP Service</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>Name it something memorable</li>
+</ol>
+<figure>
+<img src="step-3.png" alt="Name it" /><figcaption>Name it</figcaption>
+</figure>
+<ol start="4" type="1">
+<li>Direct it at the i2p-apt-cacher-ng port(127.0.0.1:7342)</li>
+</ol>
+<figure>
+<img src="step-4.png" alt="Point it at these ports" /><figcaption>Point it at these ports</figcaption>
+</figure>
+<ol start="5" type="1">
+<li>Set it to start up automatically with the router</li>
+</ol>
+<figure>
+<img src="step-5.png" alt="Configure it to start automatically" /><figcaption>Configure it to start automatically</figcaption>
+</figure>
+<ol start="6" type="1">
+<li>Make sure your settings resemble this:</li>
+</ol>
+<figure>
+<img src="step-6.png" alt="Review your settings" /><figcaption>Review your settings</figcaption>
+</figure>
+<h3 id="optimizations">Optimizations:</h3>
+<p>Since the connection between the proxy and the actual Debian repositories is not anonymized yet, there isn’t much point in having long, highly anonymous tunnels. You may wish to reduce the length of the tunnels to speed up retrieval.</p>
+<h2 id="service-setup-i2pd">Service Setup: i2pd</h2>
+<p>On versions of i2pd after 2.21 it should “just work.” It does use Debian’s configuration directory(/etc/i2pd/tunnels.d) as opposed to the default i2pd configuration directory (/var/lib/i2pd/tunnels.d), so if you’re using something that is not Debian-like, you will need to symlink it to the correct directory.</p>
+<p>If you’re still running 2.20 or lower, upgrade. There’s lots of cool stuff in the new versions. If you absolutely cannot upgrade for some reason, add this to your tunnels.conf file:</p>
+<pre><code>    [APT-INBOUND]
+    type = server
+    host = 127.0.0.1
+    port = 7342
+    inbound.length = 1
+    outbound.length = 1
+    inbound.quantity = 1
+    outbound.quantity = 1
+    inbound.backupQuantity = 1
+    outbound.backupQuanitity = 1
+    keys = apt-cacher-ng-in.dat</code></pre>
+<h2 id="service-setup-sam-forwarderrouter-agnostic">Service Setup: sam-forwarder(router-agnostic)</h2>
+<h4 id="linkssources">Links/Sources:</h4>
+<ul>
+<li>https://blog.packagecloud.io/eng/2015/05/05/using-apt-cacher-ng-with-ssl-tls/</li>
+<li>https://www.zyxware.com/articles/3733/how-to-change-the-directory-of-the-apt-cacher-ng-downloaded-packages</li>
+<li>https://www.unix-ag.uni-kl.de/~bloch/acng/html/howtos.html#mirroring</li>
+<li>https://fabianlee.org/2018/02/11/ubuntu-a-centralized-apt-package-cache-using-apt-cacher-ng/</li>
+<li>https://wiki.debian.org/AptCacherNg</li>
+</ul>
